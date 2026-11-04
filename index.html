@@ -1036,6 +1036,21 @@ body.on-product .sticky-bar{display:none!important}
  .brand-mobile-name{font-size:.74rem}
  .brand-mobile-mark{width:44px;height:34px;flex-basis:44px}
 }
+
+/* ---------- Edit 21: hero text first on mobile, compact one-line hero CTAs, menu scroll lock ---------- */
+/* FIX 2 — stacked hero: text block first (DOM order), image below; undoes the order:-1 image-first rule above */
+@media(max-width:900px){
+ .hero-media{order:0}
+}
+/* FIX 1 — phones: the two main hero CTAs share ONE compact line, equal halves; Shop for Cats/Dogs row untouched */
+@media(max-width:640px){
+ .hero-ctas{flex-direction:row;flex-wrap:nowrap;align-items:stretch;gap:10px}
+ .hero-ctas .btn{flex:1 1 0;min-width:0;width:auto;padding:10px 8px;font-size:.86rem;gap:6px}
+ .hero-ctas .btn svg,.hero-ctas .wa-ic{width:15px;height:15px;flex:0 0 15px}
+}
+/* FIX 3 — while the mobile menu is open the page behind it cannot scroll; the menu panel keeps its own internal scroll (max-height + overflow rules above) and its scroll never chains to the page */
+html.menu-lock,body.menu-lock{overflow:hidden;overscroll-behavior:none}
+.mobile-menu{overscroll-behavior:contain}
 </style>
 </head>
 <body>
@@ -1693,8 +1708,35 @@ function pkr(n){ return 'PKR ' + n.toLocaleString('en-US'); }
 var header=document.getElementById('siteHeader');
 window.addEventListener('scroll',function(){header.classList.toggle('scrolled',window.scrollY>10);},{passive:true});
 var burger=document.getElementById('burgerBtn'), menu=document.getElementById('mobileMenu');
-burger.addEventListener('click',function(){var o=menu.classList.toggle('open');burger.setAttribute('aria-expanded',o?'true':'false');});
-menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){menu.classList.remove('open');});});
+/* Edit 21 — scroll lock: while the mobile menu is open, the page behind it must not scroll.
+   overflow:hidden on html+body stops wheel/keyboard/programmatic scroll; a non-passive touchmove
+   guard covers mobile browsers that keep scrolling a touch drag despite it. The menu panel itself
+   stays scrollable, and its overscroll never chains to the page (see CSS above). */
+function menuTouchGuard(e){
+  if(menu.classList.contains('open') && !e.target.closest('#mobileMenu')) e.preventDefault();
+}
+function lockPageScroll(){
+  document.documentElement.classList.add('menu-lock');
+  document.body.classList.add('menu-lock');
+  document.addEventListener('touchmove',menuTouchGuard,{passive:false});
+}
+function unlockPageScroll(){
+  if(!document.body.classList.contains('menu-lock'))return;
+  document.documentElement.classList.remove('menu-lock');
+  document.body.classList.remove('menu-lock');
+  document.removeEventListener('touchmove',menuTouchGuard);
+}
+function setMobileMenu(open){
+  menu.classList.toggle('open',open);
+  burger.setAttribute('aria-expanded',open?'true':'false');
+  burger.setAttribute('aria-label',open?'Close menu':'Open menu');
+  if(open)lockPageScroll(); else unlockPageScroll();
+}
+function closeMobileMenu(){ if(menu.classList.contains('open'))setMobileMenu(false); }
+burger.addEventListener('click',function(){setMobileMenu(!menu.classList.contains('open'));});
+menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){closeMobileMenu();});});
+document.addEventListener('keydown',function(e){ if(e.key==='Escape')closeMobileMenu(); });
+window.addEventListener('resize',function(){ if(window.innerWidth>1024)closeMobileMenu(); });
 
 /* marquee duplicate */
 var track=document.getElementById('marqueeTrack'); track.innerHTML+=track.innerHTML; if(window.lucide) lucide.createIcons();
@@ -2278,8 +2320,8 @@ function showPage(name){
   document.querySelectorAll('[data-page]').forEach(function(el){ el.hidden=el.getAttribute('data-page')!==name; });
   document.body.classList.toggle('on-product',name==='product');
   if(TITLES[name])document.title=TITLES[name];
+  closeMobileMenu();
   window.scrollTo(0,0);
-  menu.classList.remove('open'); burger.setAttribute('aria-expanded','false');
   setTimeout(function(){ document.querySelectorAll('[data-page="'+name+'"] .rv').forEach(function(el){ el.classList.add('in'); }); },70);
   if(window.lucide) lucide.createIcons();
 }
