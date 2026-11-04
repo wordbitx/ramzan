@@ -862,6 +862,117 @@ body.on-product .sticky-bar{display:none!important}
 .lb-close{position:absolute;top:16px;right:16px;width:46px;height:46px;border-radius:50%;border:0;background:#fff;color:var(--navy);display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow-sm)}
 .lb-close svg{width:21px;height:21px}
 .lb-hint{color:#B9CFE4;font-size:.83rem;font-weight:600;margin-top:14px}
+
+/* ---------- Edit 18: mobile premium overhaul — topbar, header, hero, menu, sticky bar, product cards ---------- */
+/* product controls: rectangular with softly curved edges (not pills) — one line of text, nothing spills out */
+.qty-step{border-radius:12px}
+.add-btn{border-radius:12px;white-space:nowrap}
+.buy-now{border-radius:12px;white-space:nowrap}
+.pd-actions .add-btn,.pd-actions .buy-now{white-space:nowrap}
+
+/* floating WhatsApp bubble: gone on phones — the sticky bar already carries WhatsApp, the bubble only covered content */
+@media(max-width:760px){
+ .wa-float{display:none}
+ /* sticky action bar: slimmer + squared, present but not hogging the screen */
+ .sticky-bar{padding:7px 10px calc(7px + env(safe-area-inset-bottom));gap:8px}
+ .sticky-bar .btn{flex:1 1 0;min-width:0;padding:10px 4px;font-size:.84rem;border-radius:12px;gap:6px;box-shadow:none}
+ .sticky-bar .btn svg{width:17px;height:17px}
+ .sticky-bar .wa-ic{width:17px;height:17px}
+ body{padding-bottom:58px}
+ .toast{bottom:76px}
+ section{padding:58px 0}
+}
+/* topbar: one clean row on phones — LAD mark, phone, WhatsApp pill; nothing wraps or runs off-screen */
+@media(max-width:640px){
+ .wrap{padding:0 18px}
+ .topbar-in{flex-wrap:nowrap;justify-content:space-between;gap:10px;padding:7px 0}
+ .topbar .tb-left{display:inline-flex;flex:0 0 auto;min-width:0}
+ .topbar .tb-left .lad-full{display:none}
+ .topbar .sp{margin-left:auto;gap:11px;flex:0 1 auto;min-width:0}
+ .topbar a{font-size:.8rem;white-space:nowrap}
+ .topbar a.tb-wa{padding:5px 12px 5px 10px;font-size:.8rem}
+ .topbar a.tb-wa .wa-ic{width:16px;height:16px;flex-basis:16px}
+ /* header: tighter, logo + cart + WhatsApp + burger in one balanced row */
+ .header-in{gap:10px;padding:9px 0}
+ .head-actions{gap:8px}
+ .cart-btn{width:42px;height:42px;flex-basis:42px}
+ .head-wa{width:42px!important;height:42px;flex-basis:42px}
+ .burger{padding:6px}
+ /* mobile menu: actions share the row evenly, labels never touch the edges or spill out */
+ .mobile-menu{padding:8px 0 14px;max-height:calc(100dvh - 72px);overflow-y:auto}
+ .mobile-menu a{padding:11px 2px;font-size:.95rem}
+ .mobile-menu .mm-actions{gap:9px}
+ .mobile-menu .mm-actions .btn{flex:1 1 0;min-width:0;padding:12px 6px;font-size:.88rem;border-radius:12px;white-space:nowrap}
+}
+/* hero on phones/tablets: image sized to its frame, seal straddling its corner, buttons stacked with breathing room */
+@media(max-width:900px){
+ .hero{padding-top:8px}
+ .hero-grid{padding-bottom:84px}
+ .hero-media{width:100%;max-width:300px;margin:0 auto 28px}
+ .hero-img{max-width:none;width:100%}
+ .lad-badge{left:12px;bottom:-26px}
+ .eyebrow{font-size:.68rem;letter-spacing:.045em;padding:7px 12px;max-width:100%}
+ .hero-ctas{flex-direction:column;align-items:stretch;gap:10px;margin-top:14px}
+ .hero-ctas .btn{width:100%;padding:12px 18px;font-size:.95rem;border-radius:14px}
+ .hero-shop-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+ .hero-shop-row .btn{width:100%;min-width:0;padding:12px 8px;font-size:.9rem;border-radius:14px;gap:7px}
+ .hero-shop-row .btn svg{width:18px;height:18px;flex:0 0 18px}
+ .hero-call{margin-top:14px}
+}
+/* blue service strip: separated soft tiles on phones instead of one heavy box */
+@media(max-width:860px){
+ .feat-strip{gap:8px;padding:9px}
+ .feat{background:rgba(255,255,255,.055);border-radius:13px;padding:12px 11px}
+ .feat .fic{width:36px;height:36px;flex-basis:36px}
+ .feat .fic svg{width:18px;height:18px}
+}
+/* top-3 cards: one per row on phones so their buttons get a full, uncrowded row */
+@media(max-width:639px){
+ .top3{grid-template-columns:1fr;gap:16px}
+ .top-card:last-child{grid-column:auto}
+ .tc-body{padding:20px 18px 22px;gap:8px}
+ .tc-body h3{font-size:1.14rem}
+ .tc-body p,.tc-list li{font-size:.9rem}
+ .tc-actions{gap:9px;flex-wrap:nowrap}
+ .tc-actions .btn{flex:1 1 0;min-width:0;padding:12px 8px;font-size:.85rem;border-radius:12px;white-space:nowrap}
+ .tc-actions .btn svg{width:16px;height:16px;flex:0 0 16px}
+ /* Shop for Cats / Dogs: full-width premium rows */
+ .shop-by{grid-template-columns:1fr;gap:12px}
+ .shop-by-card{padding:17px 16px;gap:13px;border-radius:16px}
+ .shop-by-card .ic{width:48px;height:48px;flex-basis:48px}
+ .shop-by-card .ic svg{width:24px;height:24px}
+ .shop-by-card b{font-size:1.02rem}
+ .shop-by-card small{font-size:.8rem;line-height:1.4}
+ .shop-by-card .arr{display:block;width:20px;height:20px;flex-basis:20px}
+ /* product cards (home, shop, category + product pages): stacked rectangular controls — Add to Cart on ONE line */
+ .prod{border-radius:16px}
+ .prod-body{padding:12px 13px 14px;gap:5px}
+ .prod-foot{flex-direction:column;align-items:stretch;gap:8px;padding-top:10px}
+ .prod-foot .qty-step{align-self:center;border-radius:11px}
+ .prod-foot .qty-step button{width:36px;min-height:38px;font-size:1rem}
+ .prod-foot .qty-step b{min-width:24px;font-size:.9rem}
+ .prod-foot .add-btn{width:100%;padding:12px 8px;font-size:.86rem;border-radius:11px;gap:7px}
+ .prod .buy-now{padding:10px 8px;font-size:.84rem;border-radius:11px;margin-top:2px;gap:7px}
+ /* navy shop banner: comfortable padding, heading not cramped */
+ .shop-banner{padding:24px 20px;border-radius:18px}
+ /* product page actions: stepper on its own row, Add / Buy share the next row evenly */
+ .pd-actions{gap:9px}
+ .pd-actions .add-btn{flex:1 1 150px}
+ .pd-actions .buy-now{flex:1 1 150px}
+ /* attached trust strip: tighter type so the four promises stay tidy */
+ .trust-attached .t2-item{padding:10px 8px;gap:9px}
+ .trust-attached .t2-ic{width:36px;height:36px;flex-basis:36px}
+ .trust-attached .t2-ic svg{width:17px;height:17px}
+ .trust-attached b{font-size:.79rem}
+ .trust-attached small{font-size:.68rem}
+}
+
+/* ---------- Edit 19: topbar + header side inset on phones — .topbar-in/.header-in padding shorthand was zeroing out .wrap's side padding, so these two rows ran edge-to-edge while the hero kept its 18px inset ---------- */
+@media(max-width:640px){
+ .topbar-in{padding-left:18px;padding-right:18px}
+ .header-in{padding-left:18px;padding-right:18px}
+ .mobile-menu{padding-left:18px;padding-right:18px}
+}
 </style>
 </head>
 <body>
