@@ -1051,6 +1051,33 @@ body.on-product .sticky-bar{display:none!important}
 /* FIX 3 — while the mobile menu is open the page behind it cannot scroll; the menu panel keeps its own internal scroll (max-height + overflow rules above) and its scroll never chains to the page */
 html.menu-lock,body.menu-lock{overflow:hidden;overscroll-behavior:none}
 .mobile-menu{overscroll-behavior:contain}
+
+/* ---------- Edit 22: mobile header — topbar removed entirely on phones, icon cluster pinned to the right edge, smaller brand lockup ---------- */
+@media(max-width:640px){
+ /* topbar: removed completely on phones — no LAD line, no phone line, no WhatsApp, no leftover strip or gap; the white header is the topmost element (desktop topbar untouched) */
+ .topbar{display:none}
+ /* header: proper flex row — brand lockup left, cart / WhatsApp / burger cluster pinned to the right edge at the standard 18px inset, icons spread wider */
+ .header-in{justify-content:space-between}
+ .head-actions{margin-left:auto;gap:12px}
+ /* smaller mobile brand lockup so the name stops crowding the icons */
+ .brand-mobile{gap:7px}
+ .brand-mobile-mark{width:44px;height:34px;flex-basis:44px}
+ .brand-mobile-name{font-size:.72rem}
+ .brand-mobile-hosp{gap:6px;margin-top:2px}
+ .bmh-txt{font-size:.5rem;letter-spacing:.26em}
+}
+
+/* ---------- Edit 23: gold LAD seal — text grouped and vertically centred on phones only; seal size, gold styling, double ring and straddle position untouched ---------- */
+@media(max-width:640px){
+ /* tighter ring padding so the whole text group fits inside the dashed ring and can truly centre */
+ .lb-ring{justify-content:center;padding:4px 6px}
+ /* LAD sits in the middle band with the license text, not pushed to the top of the ring */
+ .lb-lad{line-height:1}
+ /* divider hugs both lines instead of opening an empty gap in the middle */
+ .lb-div{margin:2px 0}
+ /* license text: no inherited top margin, tighter leading — the three lines sit right under LAD */
+ .lb-sub{margin-top:0;line-height:1.3}
+}
 </style>
 </head>
 <body>
